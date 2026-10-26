@@ -599,6 +599,71 @@ window.NIST171 = [{"id":"3.1.1","family":"Access Control","text":"Limit system a
     ['scheduled', 'Assessment scheduled'], ['in_progress', 'Assessment in progress'], ['complete', 'Assessment complete']
   ];
 
+  // Small business certification programs. CERT supports preparing and tracking applications only; approval is by the
+  // agency named in `approves`. Rules summarized from 13 CFR Parts 124, 126, 127 and 128 (checked October 2026);
+  // applicants confirm current requirements on the linked SBA pages before submitting.
+  const SB_COMMON_DOCS = [
+    ['formation', 'Articles of organization or incorporation'], ['governing', 'Operating agreement or bylaws, with amendments'],
+    ['ownership', 'Ownership records (stock certificates, stock ledger or membership interests)'], ['biztax', 'Business federal tax returns (most recent years)'],
+    ['resumes', 'Resumes of owners and officers'], ['sam', 'SAM.gov registration (UEI)']
+  ];
+  const SB_SIZE = ['size', 'Small under the SBA size standard for the NAICS code(s) you will compete under'];
+  const SB_SAM = ['samActive', 'Active SAM.gov registration'];
+  const SB_PROGRAMS = [
+    { id: 'wosb', short: 'WOSB', name: 'Women-Owned Small Business', approves: 'SBA (or an SBA-approved third-party certifier)', renewMonths: 36,
+      cycle: 'Program examination and recertification every 3 years (13 CFR 127.400)',
+      info: 'https://www.sba.gov/federal-contracting/contracting-assistance-programs/women-owned-small-business-federal-contract-program', reg: 'https://www.ecfr.gov/current/title-13/chapter-I/part-127',
+      eligibility: [SB_SIZE, ['own51', 'At least 51% unconditionally and directly owned by one or more women who are U.S. citizens'],
+        ['control', 'Women control the business: a woman holds the highest officer position and manages day-to-day operations and long-term decisions'], SB_SAM],
+      docs: SB_COMMON_DOCS.concat([['citizenship', 'Proof of U.S. citizenship for each qualifying woman']]) },
+    { id: 'edwosb', short: 'EDWOSB', name: 'Economically Disadvantaged Women-Owned Small Business', approves: 'SBA (or an SBA-approved third-party certifier)', renewMonths: 36,
+      cycle: 'Program examination and recertification every 3 years (13 CFR 127.400)',
+      info: 'https://www.sba.gov/federal-contracting/contracting-assistance-programs/women-owned-small-business-federal-contract-program', reg: 'https://www.ecfr.gov/current/title-13/chapter-I/part-127',
+      eligibility: [SB_SIZE, ['own51', 'At least 51% unconditionally and directly owned by one or more women who are U.S. citizens'],
+        ['control', 'Women control the business: a woman holds the highest officer position and manages day-to-day operations and long-term decisions'],
+        ['networth', 'Each qualifying woman: personal net worth under $850,000, excluding her ownership in the business and equity in her primary residence'],
+        ['income', 'Each qualifying woman: adjusted gross income averaging $400,000 or less over the three preceding years'],
+        ['assets', 'Each qualifying woman: total assets of $6.5 million or less at fair market value, including her primary residence and the business'], SB_SAM],
+      docs: SB_COMMON_DOCS.concat([['citizenship', 'Proof of U.S. citizenship for each qualifying woman'], ['pfs', 'Personal financial statement (SBA Form 413) for each qualifying woman'],
+        ['perstax', 'Personal federal tax returns, three most recent years, for each qualifying woman']]) },
+    { id: 'vosb', short: 'VOSB', name: 'Veteran-Owned Small Business', approves: 'SBA Veteran Small Business Certification (VetCert); the VA confirms veteran status', renewMonths: 36,
+      cycle: 'Recertify every 3 years; report changes that affect eligibility within 30 days (13 CFR 128.306)',
+      info: 'https://www.sba.gov/federal-contracting/contracting-assistance-programs/veteran-contracting-assistance-programs', reg: 'https://www.ecfr.gov/current/title-13/chapter-I/part-128',
+      eligibility: [['own51', 'At least 51% owned by one or more veterans'],
+        ['control', 'Veterans control the business: a veteran holds the highest officer position and manages day-to-day operations and long-term decisions'],
+        ['size', 'Small under the SBA size standard for a NAICS code in the SAM.gov profile'], ['vaStatus', 'Veteran status confirmed by the VA'], SB_SAM],
+      docs: SB_COMMON_DOCS.concat([['dd214', 'Proof of veteran status for each qualifying owner (for example DD-214)']]) },
+    { id: 'sdvosb', short: 'SDVOSB', name: 'Service-Disabled Veteran-Owned Small Business', approves: 'SBA Veteran Small Business Certification (VetCert); the VA confirms veteran status and the service-connected disability rating', renewMonths: 36,
+      cycle: 'Recertify every 3 years; report changes that affect eligibility within 30 days (13 CFR 128.306)',
+      info: 'https://www.sba.gov/federal-contracting/contracting-assistance-programs/veteran-contracting-assistance-programs', reg: 'https://www.ecfr.gov/current/title-13/chapter-I/part-128',
+      eligibility: [['own51', 'At least 51% owned by one or more service-disabled veterans'],
+        ['control', 'Service-disabled veterans control the business: one holds the highest officer position and manages day-to-day operations and long-term decisions'],
+        ['size', 'Small under the SBA size standard for a NAICS code in the SAM.gov profile'], ['vaRating', 'Veteran status and service-connected disability rating confirmed by the VA'], SB_SAM],
+      docs: SB_COMMON_DOCS.concat([['dd214', 'Proof of veteran status for each qualifying owner (for example DD-214)'], ['varating', 'VA service-connected disability rating letter for each qualifying owner']]) },
+    { id: '8a', short: '8(a)', name: '8(a) Business Development', approves: 'SBA', renewMonths: 12,
+      cycle: 'Annual review submissions every year (13 CFR 124.112); nine-year program term',
+      info: 'https://www.sba.gov/federal-contracting/contracting-assistance-programs/8a-business-development-program', reg: 'https://www.ecfr.gov/current/title-13/chapter-I/part-124',
+      eligibility: [['size', 'Small under the SBA size standard for your primary NAICS code'], ['first', 'Not previously admitted to the 8(a) program'],
+        ['own51', 'At least 51% unconditionally owned and controlled by socially and economically disadvantaged U.S. citizens'],
+        ['econ', 'Economic disadvantage: personal net worth $850,000 or less, three-year average adjusted gross income $400,000 or less, total assets $6.5 million or less (exclusions in 13 CFR 124.104)'],
+        ['character', 'Good character and potential for success'], SB_SAM],
+      docs: SB_COMMON_DOCS.concat([['citizenship', 'Proof of U.S. citizenship for each disadvantaged owner'], ['pfs', 'Personal financial statement (SBA Form 413) for each disadvantaged owner'],
+        ['perstax', 'Personal federal tax returns, three most recent years, for each disadvantaged owner'], ['narrative', 'Social disadvantage narrative (if not a presumed group member)'],
+        ['finstat', 'Business financial statements']]) },
+    { id: 'hubzone', short: 'HUBZone', name: 'Historically Underutilized Business Zone', approves: 'SBA', renewMonths: 36,
+      cycle: 'Recertify every 3 years, in the 90 days before the certification anniversary (13 CFR 126.500)',
+      info: 'https://www.sba.gov/federal-contracting/contracting-assistance-programs/hubzone-program', reg: 'https://www.ecfr.gov/current/title-13/chapter-I/part-126',
+      eligibility: [['size', 'Small under the SBA size standard for your primary NAICS code'],
+        ['own51', 'At least 51% owned and controlled by U.S. citizens (or other eligible owners under 13 CFR 126.200)'],
+        ['office', 'Principal office located in a HUBZone'], ['res35', 'At least 35% of employees live in a HUBZone'], SB_SAM],
+      docs: SB_COMMON_DOCS.concat([['office', 'Proof of principal office location (lease or deed)'], ['roster', 'Employee roster with home addresses (HUBZone residency)'],
+        ['payroll', 'Payroll records for the most recent pay period']]) }
+  ];
+  const SB_STATUSES = [['', 'Not pursuing'], ['evaluating', 'Checking eligibility'], ['preparing', 'Preparing application'], ['submitted', 'Submitted to agency'],
+    ['review', 'Under agency review'], ['approved', 'Approved by agency'], ['denied', 'Not approved'], ['renewal', 'Renewal in progress']];
+  const SB_DOC_STATUSES = [['needed', 'Needed'], ['collected', 'Collected'], ['uploaded', 'Uploaded to CERT'], ['submitted', 'Submitted to agency']];
+  const SB_APPROVAL_NOTE = 'CERT helps you prepare and track applications. It cannot certify a business: the SBA approves WOSB, EDWOSB, 8(a) and HUBZone, and SBA VetCert approves VOSB and SDVOSB, with the VA confirming veteran status and disability ratings.';
+
   const DEFAULT_PROVIDER = { name: 'CERT V2.0', tagline: 'CMMC compliance management and assessment-readiness platform', phone: '', email: '' };
   const DEFAULT_REG = {
     asOf: '2026-10-16',
@@ -612,7 +677,7 @@ window.NIST171 = [{"id":"3.1.1","family":"Access Control","text":"Limit system a
     ]
   };
 
-  window.CERT_FW = { FAMILIES, REQS, REQ, DEFAULT_METHOD, L1, L1_REQ_IDS, L3, ATP_AREAS, EVIDENCE_TYPES, STATUSES, SERVICES, SERVICE_FOR, PACKAGES, PLANS, ENGAGEMENT_TIERS, PARTNER_TYPES, HANDOFF_STAGES, DEFAULT_PROVIDER, DEFAULT_REG };
+  window.CERT_FW = { FAMILIES, REQS, REQ, DEFAULT_METHOD, L1, L1_REQ_IDS, L3, ATP_AREAS, EVIDENCE_TYPES, STATUSES, SERVICES, SERVICE_FOR, PACKAGES, PLANS, ENGAGEMENT_TIERS, PARTNER_TYPES, HANDOFF_STAGES, DEFAULT_PROVIDER, DEFAULT_REG, SB_PROGRAMS, SB_STATUSES, SB_DOC_STATUSES, SB_APPROVAL_NOTE };
 })();
 
 </script>
@@ -759,7 +824,7 @@ window.NIST171 = [{"id":"3.1.1","family":"Access Control","text":"Limit system a
   }
 
   function evidenceStats(org) {
-    const ev = org.evidence || [];
+    const ev = (org.evidence || []).filter(e => e.kind !== 'program');   // SBA program documents are not CMMC evidence
     const pending = ev.filter(e => e.reviewStatus === 'pending' || e.reviewStatus === 'needs_info').length;
     const rejected = ev.filter(e => e.reviewStatus === 'rejected').length;
     const expired = ev.filter(isExpired).length;
@@ -1088,7 +1153,7 @@ window.NIST171 = [{"id":"3.1.1","family":"Access Control","text":"Limit system a
       (s.blocked ? '<p class="d-warn">CA.L2-3.12.4: no complete System Security Plan. Under the DoD methodology the assessment cannot be completed and no score should be posted to SPRS until the SSP exists.</p>' : '') +
       '<table class="d-kv"><tr><th>Assessment date</th><td>' + E.iso(Date.now()) + '</td></tr><tr><th>Assessment scope</th><td>' + esc(org.ssp.systemName || 'Not named') + ' (' + esc(org.ssp.systemId || 'no system ID') + ')</td></tr>' +
       '<tr><th>System boundary</th><td>' + esc(org.ssp.boundary || 'Not yet documented') + '</td></tr><tr><th>Plan of action completion date</th><td>' + esc(latestDue(org) || 'n/a') + '</td></tr>' +
-      '<tr><th>Requirements assessed</th><td>' + (110 - s.counts.not_assessed) + ' of 110</td></tr><tr><th>Supporting evidence</th><td>' + (org.evidence || []).filter(e => e.reviewStatus === 'approved').length + ' approved artifacts in the evidence vault</td></tr></table></section>' +
+      '<tr><th>Requirements assessed</th><td>' + (110 - s.counts.not_assessed) + ' of 110</td></tr><tr><th>Supporting evidence</th><td>' + (org.evidence || []).filter(e => e.kind !== 'program').filter(e => e.reviewStatus === 'approved').length + ' approved artifacts in the evidence vault</td></tr></table></section>' +
       '<section><h2>Score by family</h2><table class="d-table"><thead><tr><th>Family</th><th>Met</th><th>Points</th></tr></thead><tbody>' + fams + '</tbody></table></section>' +
       '<section><h2>Point deductions and remediation priority</h2><p>Ordered by point value. Requirements that are not POA&M-eligible must be fully met before a CMMC assessment can yield Conditional status.</p><table class="d-table"><thead><tr><th>Requirement</th><th>Practice</th><th>Status</th><th>Points</th><th>POA&M-eligible</th></tr></thead><tbody>' + (rows || '<tr><td colspan="5">No deductions</td></tr>') + '</tbody></table></section>' +
       '<section><h2>SPRS entry checklist</h2><ul><li>System security plan name / version: ' + esc((org.ssp.systemName || '—') + ' v' + (org.ssp.version || '—')) + '</li><li>CAGE codes covered: ' + esc(org.intake.cage || '—') + '</li><li>Score: ' + s.score + '</li><li>Assessment date: ' + E.iso(Date.now()) + '</li><li>Plan of action completion date: ' + esc(latestDue(org) || 'n/a') + '</li></ul><p>Post only a score that the evidence supports. The affirming official is certifying accuracy to the government.</p></section>' + foot(state);
@@ -1145,14 +1210,14 @@ window.NIST171 = [{"id":"3.1.1","family":"Access Control","text":"Limit system a
   }
   function evidenceCsv(org) {
     const head = ['Evidence', 'Type', 'Requirements', 'Objectives', 'SHA-256', 'Version', 'Uploaded by', 'Uploaded', 'Review status', 'Reviewer', 'Reviewed', 'Expires'];
-    const rows = (org.evidence || []).map(e => [e.name, e.type, (e.reqIds || []).join(' '), (e.objectiveIds || []).join(' '), e.sha256, e.version, e.uploadedBy, e.uploadedAt, e.reviewStatus, e.reviewer, e.reviewedAt, e.expiresAt]);
+    const rows = (org.evidence || []).filter(e => e.kind !== 'program').map(e => [e.name, e.type, (e.reqIds || []).join(' '), (e.objectiveIds || []).join(' '), e.sha256, e.version, e.uploadedBy, e.uploadedAt, e.reviewStatus, e.reviewer, e.reviewedAt, e.expiresAt]);
     return [head].concat(rows).map(r => r.map(csvCell).join(',')).join('\n');
   }
 
   function level1(state, org) {
     const l1 = E.scoreL1(org);
     const rows = l1.items.map(i => '<tr><td class="mono">' + i.p.id + '</td><td>FAR 52.204-21' + i.p.far + '</td><td>' + i.p.reqs.map(id => esc(FW.REQ[id].title)).join('; ') + '</td><td>' + (i.status === 'met' ? 'MET' : i.status === 'not_met' ? 'NOT MET' : 'Not assessed') + '</td></tr>').join('');
-    const ev = (org.evidence || []).filter(e => (e.reqIds || []).some(id => FW.L1_REQ_IDS.includes(id)));
+    const ev = (org.evidence || []).filter(e => e.kind !== 'program').filter(e => (e.reqIds || []).some(id => FW.L1_REQ_IDS.includes(id)));
     const evRows = ev.map(e => '<tr><td>' + esc(e.name) + '</td><td>' + esc((e.reqIds || []).join(', ')) + '</td><td>' + esc(e.reviewStatus) + '</td><td class="mono">' + esc((e.sha256 || '').slice(0, 16)) + '…</td></tr>').join('');
     const all = l1.met === l1.total;
     const body = head(state, org, 'CMMC Level 1 (Self) Assessment Package', 'FCI safeguarding · FAR 52.204-21') +
@@ -1233,6 +1298,29 @@ window.NIST171 = [{"id":"3.1.1","family":"Access Control","text":"Limit system a
   // Printable certificate (landscape). Final only when the client is genuinely ready: Level 2/3 = all readiness-gate
   // checks pass; Level 1 = every FAR practice met. Otherwise it renders as a watermarked draft. It is never a CMMC
   // certification, and says so on its face.
+  // Small business certification programs (SBA / VetCert): where each application stands. Never claims approval.
+  function programs(state, org) {
+    const P = FW.SB_PROGRAMS, recs = org.programs || {}, lab = (list, v) => (list.find(x => x[0] === (v || '')) || list[0])[1];
+    const done = (r, d) => r.docs && r.docs[d[0]] && ['uploaded', 'submitted'].includes(r.docs[d[0]].status);
+    const active = P.filter(p => recs[p.id] && recs[p.id].status);
+    const rows = active.map(p => {
+      const r = recs[p.id], elig = p.eligibility.filter(e => r.elig && r.elig[e[0]]).length, docs = p.docs.filter(d => done(r, d)).length;
+      return '<tr><td><b>' + esc(p.short) + '</b><div class="d-small">' + esc(p.name) + '</div></td><td>' + esc(lab(FW.SB_STATUSES, r.status)) + '</td><td>' + elig + ' of ' + p.eligibility.length + '</td><td>' + docs + ' of ' + p.docs.length + '</td>' +
+        '<td>' + esc(r.caseNo || '—') + '</td><td>' + esc(r.submitted || '—') + '</td><td>' + esc(r.certified || '—') + '</td><td>' + esc(r.renewal || '—') + '</td><td>' + esc(p.approves) + '</td></tr>';
+    }).join('');
+    const open = active.map(p => {
+      const r = recs[p.id];
+      const e = p.eligibility.filter(x => !(r.elig && r.elig[x[0]])).map(x => '<li>' + esc(x[1]) + '</li>').join('');
+      const d = p.docs.filter(x => !done(r, x)).map(x => '<li>' + esc(x[1]) + '</li>').join('');
+      return e || d ? '<h3>' + esc(p.short) + '</h3>' + (e ? '<p>Eligibility items not yet confirmed:</p><ul>' + e + '</ul>' : '') + (d ? '<p>Documents still needed:</p><ul>' + d + '</ul>' : '') : '';
+    }).join('');
+    const body = head(state, org, 'Small Business Certification Summary', 'SBA and VetCert programs') +
+      '<section><p><b>Important:</b> ' + esc(FW.SB_APPROVAL_NOTE) + '</p><div class="d-scroll"><table class="d-table d-dense"><thead><tr><th>Program</th><th>Status</th><th>Eligibility</th><th>Documents</th><th>Case no.</th><th>Submitted</th><th>Certified</th><th>Renewal due</th><th>Approved by</th></tr></thead><tbody>' +
+      (rows || '<tr><td colspan="9">No programs are being pursued yet.</td></tr>') + '</tbody></table></div></section>' + (open ? '<section><h2>Open items</h2>' + open + '</section>' : '') +
+      '<footer class="d-foot"><p>' + esc(FW.SB_APPROVAL_NOTE) + ' Eligibility rules are summarized from 13 CFR Parts 124, 126, 127 and 128; confirm current requirements with the SBA before submitting.</p></footer>';
+    return { title: 'Small Business Certification Summary', body };
+  }
+
   function certificate(state, org) {
     const M = state.method, i = org.intake || {}, pv = (state.provider || {}).name || 'CERT V2.0', g = org.gate || {};
     const l1 = org.level === 1, R = E.readiness(org, M), L1 = E.scoreL1(org);
@@ -1262,7 +1350,7 @@ window.NIST171 = [{"id":"3.1.1","family":"Access Control","text":"Limit system a
     return { title: title + (ready ? '' : ' (draft)'), body, landscape: true, final: ready };
   }
 
-  window.CERT_DOCS = { sprsReport, ssp, poam, poamCsv, evidenceCsv, level1, policy, mockReport, readinessLetter, proposal, certificate, DISCLAIMER };
+  window.CERT_DOCS = { sprsReport, ssp, poam, poamCsv, evidenceCsv, level1, policy, mockReport, readinessLetter, proposal, certificate, programs, DISCLAIMER };
 })();
 
 </script>
@@ -1455,6 +1543,7 @@ window.NIST171 = [{"id":"3.1.1","family":"Access Control","text":"Limit system a
       const buf = await f.arrayBuffer(), hash = await sha256(buf), fileId = uid('file');
       await IDB.put('files', fileId, new Blob([buf], { type: f.type || 'application/octet-stream' }));
       const e = { id: uid('ev'), name: f.name, type: m.type, reqIds: m.reqIds, objectiveIds: m.objectiveIds, size: f.size, mime: f.type, sha256: hash, fileId, version: 1, uploadedBy: m.uploadedBy, uploadedAt: E.iso(Date.now()), reviewer: '', reviewStatus: 'pending', reviewedAt: '', expiresAt: m.expiresAt, comments: m.comments, versions: [] };
+      if (m.kind === 'program') Object.assign(e, { kind: 'program', program: m.program, docId: m.docId });
       o.evidence.push(e);
       return e;
     },
@@ -1464,11 +1553,14 @@ window.NIST171 = [{"id":"3.1.1","family":"Access Control","text":"Limit system a
       return versionFields(e, f, hash, fileId, m);
     },
     async getEvidenceFile(o, e) { return e && e.fileId ? (await IDB.get('files', e.fileId)) || null : null; },
-    importState: null, switchUser: null, onError() {}
+    importState: null, switchUser: null, onError() {},
+    // The offline/demo app has no licensing: show it as a demo of an Enterprise license.
+    license: () => ({ type: 'enterprise', label: 'Enterprise license (demo)', seats: null, clients: null, status: 'active', demo: true }),
+    usage: () => null, siteOwner: () => false, request: null
   };
 
   // ---------- api mode: REST ----------
-  const DOC = ['name', 'level', 'targetScore', 'plan', 'createdAt', 'intake', 'ssp', 'assets', 'gate', 'sel', 'supporting', 'l3', 'atp', 'affirmations', 'scoreHistory', 'handoff'];
+  const DOC = ['name', 'level', 'targetScore', 'plan', 'createdAt', 'intake', 'ssp', 'assets', 'gate', 'sel', 'supporting', 'l3', 'atp', 'affirmations', 'scoreHistory', 'handoff', 'programs'];
   const EV_META = ['name', 'type', 'reqIds', 'objectiveIds', 'expiresAt', 'comments', 'reviewStatus', 'reviewer', 'reviewedAt'];
   const USER_FIELDS = ['name', 'title', 'role', 'orgIds', 'consulted', 'email', 'active'];
   const pick = (o, ks) => { const r = {}; ks.forEach(k => { if (o[k] !== undefined) r[k] = o[k]; }); return r; };
@@ -1579,6 +1671,7 @@ window.NIST171 = [{"id":"3.1.1","family":"Access Control","text":"Limit system a
       fd.append('file', new Blob([buf], { type: f.type || 'application/octet-stream' }), f.name);
       fd.append('id', uid('ev')); fd.append('type', m.type); fd.append('reqIds', JSON.stringify(m.reqIds)); fd.append('objectiveIds', JSON.stringify(m.objectiveIds));
       fd.append('expiresAt', m.expiresAt || ''); fd.append('comments', m.comments || ''); fd.append('sha256', hash); fd.append('attestNoCui', 'true');
+      if (m.kind === 'program') { fd.append('kind', 'program'); fd.append('program', m.program); fd.append('docId', m.docId); }
       const rec = await json('POST', '/api/orgs/' + enc(o.id) + '/evidence', fd);
       o.evidence.push(rec);
       const so = snap && snap.orgs.find(x => x.id === o.id);
@@ -1613,7 +1706,12 @@ window.NIST171 = [{"id":"3.1.1","family":"Access Control","text":"Limit system a
       ls.set('cert-api-identity', id);
       return Api.load();
     },
-    onError(fn) { errorHandler = fn; }
+    onError(fn) { errorHandler = fn; },
+    license: () => meta.license || { type: 'unlimited', label: 'Unlimited', seats: null, clients: null, status: 'active' },
+    usage: () => meta.usage || null,
+    siteOwner: () => !!meta.siteOwner,
+    // Direct API calls outside the state diff (customer workspaces). Waits for pending saves first.
+    async request(method, path, body) { await chain; return json(method, path, body); }
   };
 
   window.CERT_STORE = CFG.storage === 'api' ? Api : Local;
@@ -1754,6 +1852,7 @@ window.NIST171 = [{"id":"3.1.1","family":"Access Control","text":"Limit system a
   const isClient = () => user().role === 'client';
   function routeAllowed(r, o) {
     if (r === 'settings') return can('settings');
+    if (r === 'workspaces') return !!(Store.siteOwner && Store.siteOwner());
     if (r === 'services' || r === 'partners') return can('services');
     if (r === 'portfolio') return can('portfolio');
     if (isClient() && (r === 'assess' || r === 'activity' || (r === 'l3' && (!o || o.level !== 3)))) return false;
@@ -1761,7 +1860,8 @@ window.NIST171 = [{"id":"3.1.1","family":"Access Control","text":"Limit system a
   }
   function navItems(o) {
     const portfolio = can('portfolio') && ['portfolio', 'Client portfolio', orgs().length];
-    const business = ['Business', [o && can('services') && ['services', 'Services & proposal'], can('services') && ['partners', 'Partner network', (S.partners || []).length || ''], can('settings') && ['settings', 'Settings']]];
+    const owner = Store.siteOwner && Store.siteOwner() && ['workspaces', 'Customer workspaces'];
+    const business = ['Business', [o && can('services') && ['services', 'Services & proposal'], can('services') && ['partners', 'Partner network', (S.partners || []).length || ''], owner, can('settings') && ['settings', 'Settings']]];
     if (!o) return [['Overview', [portfolio]], business];
     const r = E.readiness(o, M()), ev = E.evidenceStats(o), op = (o.poam || []).filter(p => !['closed', 'validated'].includes(p.status)).length;
     const req = (o.requests || []).filter(x => x.status === 'open').length;
@@ -1769,6 +1869,7 @@ window.NIST171 = [{"id":"3.1.1","family":"Access Control","text":"Limit system a
     return [
       ['Overview', [portfolio, ['dashboard', 'Dashboard'], ok(['activity', 'Activity log'])]],
       ['Program', [['intake', 'Intake & scoping'], ['l1', 'Level 1 · FCI', '17'], ['l2', 'Level 2 · CUI', '110'], ['sprs', 'SPRS score'], ok(['l3', 'Level 3 · DIBCAC'])]],
+      ['Small business programs', [['programs', 'SBA certifications', progTracked(o) || '']]],
       ['Documentation', [['evidence', 'Evidence vault', ev.pending + ev.expired + req || '', ev.pending + ev.expired + req > 0], ['poam', isClient() ? 'Remediation (POA&M)' : 'POA&M', op || ''], ['ssp', 'SSP builder'], ['policies', 'Policy library'], ['reports', 'Reports']]],
       ['Assessment', [ok(['assess', 'Mock & independent']), ['gate', 'Readiness gate', r.passed + '/' + r.total, r.ready]]],
       business
@@ -1807,6 +1908,7 @@ window.NIST171 = [{"id":"3.1.1","family":"Access Control","text":"Limit system a
     over.forEach(p => alerts.push(['bad', 'POA&M overdue: ' + FW.REQ[p.reqId].cmmc + ' (due ' + p.due + ')', 'poam']));
     FW.FAMILIES.forEach(f => { const p = (o.policies || {})[f.code]; if (p && p.reviewDue && E.daysUntil(p.reviewDue) <= 30) alerts.push(['warn', f.policy + ' review due ' + p.reviewDue, 'policies']); });
     (o.requests || []).filter(x => x.status === 'open').forEach(x => alerts.push(['warn', 'Assessor requested evidence for ' + FW.REQ[x.reqId].cmmc, 'evidence']));
+    progAlerts(o).forEach(x => alerts.push(x));
     const lastAff = (o.affirmations || [])[0];
     if (lastAff && E.daysUntil(E.addDays(lastAff.date, m.affirmationCadenceDays)) <= 60) alerts.push(['warn', 'Annual SPRS affirmation due ' + E.addDays(lastAff.date, m.affirmationCadenceDays), o.level === 1 ? 'l1' : 'sprs']);
     if (s.blocked && o.level >= 2) alerts.unshift(['bad', 'No complete SSP (CA.L2-3.12.4). An SPRS score cannot be posted until the SSP exists.', 'ssp']);
@@ -1961,7 +2063,7 @@ window.NIST171 = [{"id":"3.1.1","family":"Access Control","text":"Limit system a
   }
 
   function vEvidence(o) {
-    const ev = E.evidenceStats(o), list = (o.evidence || []).slice().sort((a, b) => (b.uploadedAt || '').localeCompare(a.uploadedAt || ''));
+    const ev = E.evidenceStats(o), list = (o.evidence || []).filter(e => e.kind !== 'program').slice().sort((a, b) => (b.uploadedAt || '').localeCompare(a.uploadedAt || ''));
     const f = ui.evf;
     const filt = list.filter(e => f === 'all' || (f === 'pending' && (e.reviewStatus === 'pending' || e.reviewStatus === 'needs_info')) || (f === 'expiring' && e.expiresAt && E.daysUntil(e.expiresAt) >= 0 && E.daysUntil(e.expiresAt) <= 30) || (f === 'expired' && E.isExpired(e)) || (f === 'rejected' && e.reviewStatus === 'rejected'));
     const reqs = (o.requests || []).filter(x => x.status === 'open');
@@ -2103,7 +2205,7 @@ window.NIST171 = [{"id":"3.1.1","family":"Access Control","text":"Limit system a
     const api = Store.mode === 'api';
     const users = S.users.map(u => '<tr><td>' + inp('user', 'name', u.name, { id: u.id, bare: true }) + '<div style="margin-top:4px">' + inp('user', 'title', u.title, { id: u.id, bare: true }) + '</div><div style="margin-top:4px">' + inp('user', 'email', u.email || '', { id: u.id, bare: true, type: 'email', ph: 'Email they sign in with' }) + '</div></td><td>' + inp('user', 'role', u.role, { id: u.id, bare: true, type: 'select', opts: Object.entries(ROLES) }) + '<label class="small" style="display:flex;gap:6px;align-items:center;margin-top:8px">' + inp('user', 'active', u.active !== false, { id: u.id, bare: true, type: 'check', ro: u.id === S.currentUser }) + 'Can sign in</label></td><td class="small">' + S.orgs.map(o => '<label style="display:flex;gap:6px;align-items:center"><input type="checkbox" data-act-change="uOrg" data-id="' + u.id + '" data-x="' + o.id + '"' + (u.orgIds.includes('*') || u.orgIds.includes(o.id) ? ' checked' : '') + (u.orgIds.includes('*') ? ' disabled' : '') + '>' + esc(o.name) + '</label>').join('') + '</td><td class="small">' + S.orgs.map(o => '<label style="display:flex;gap:6px;align-items:center"><input type="checkbox" data-act-change="uCons" data-id="' + u.id + '" data-x="' + o.id + '"' + (u.consulted.includes('*') || u.consulted.includes(o.id) ? ' checked' : '') + (u.consulted.includes('*') ? ' disabled' : '') + '>' + esc(o.name) + '</label>').join('') + '</td></tr>').join('');
     const reg = S.reg || FW.DEFAULT_REG, pv = prov(), cur = org();
-    return pageH('Administration', 'Settings', 'Scoring rules, regulatory notice, users and data. The scoring methodology is configuration, so CERT can follow DoD changes without a code release.') +
+    return pageH('Administration', 'Settings', 'Scoring rules, regulatory notice, users and data. The scoring methodology is configuration, so CERT can follow DoD changes without a code release.') + licenseCard() +
       '<div class="card"><div class="card-h"><div><h2>Scoring rules engine</h2><p>' + esc(m.name) + '</p></div>' + btn('resetMethod', ui.confirm === 'method' ? 'Click again to reset' : 'Reset to DoD default', { cls: 'sm danger' }) + '</div><div class="form">' +
       inp('method', 'name', m.name, { label: 'Methodology name / version', wide: true }) +
       inp('method', 'partialCountsAs', m.partialCountsAs, { label: 'Partially implemented', type: 'select', opts: tf, hint: 'DoD methodology gives no partial credit except MFA and FIPS.' }) +
@@ -2122,6 +2224,133 @@ window.NIST171 = [{"id":"3.1.1","family":"Access Control","text":"Limit system a
   function vActivity(o) {
     const items = (o.log || []).slice(0, 200);
     return pageH('Audit trail', 'Activity log', 'Every status change, upload, review and sign-off for ' + esc(o.name) + '.') + '<div class="tbl-wrap"><table class="t"><thead><tr><th>When</th><th>Who</th><th>What</th></tr></thead><tbody>' + (items.map(l => '<tr><td class="mono small">' + esc(String(l.ts).slice(0, 16).replace('T', ' ')) + '</td><td>' + esc(l.user) + '</td><td>' + esc(l.action) + '</td></tr>').join('') || '<tr><td colspan="3" class="muted">No activity yet.</td></tr>') + '</tbody></table></div>';
+  }
+
+  // ---------- Small business certification programs (SBA / VetCert) ----------
+  // CERT prepares and tracks applications; the SBA (and SBA VetCert, with the VA) decides. Records live in o.programs.
+  const EMPTY_PROG = { status: '', elig: {}, docs: {} };
+  const progView = (o, id) => Object.assign({}, EMPTY_PROG, (o.programs || {})[id] || {});
+  function progRec(o, id) { o.programs = o.programs || {}; o.programs[id] = Object.assign({ status: '', elig: {}, docs: {} }, o.programs[id] || {}); return o.programs[id]; }
+  const sbLabel = (list, v) => (list.find(x => x[0] === (v || '')) || list[0])[1];
+  const docDone = (r, d) => r.docs && r.docs[d[0]] && ['uploaded', 'submitted'].includes(r.docs[d[0]].status);
+  const progTracked = o => FW.SB_PROGRAMS.filter(p => progView(o, p.id).status).length;
+  function progPill(status) {
+    const cls = { approved: 'ok', denied: 'bad', submitted: 'info', review: 'info', evaluating: 'warn', preparing: 'warn', renewal: 'warn' }[status] || '';
+    return pill(cls, sbLabel(FW.SB_STATUSES, status));
+  }
+  function progAlerts(o) {
+    const out = [];
+    FW.SB_PROGRAMS.forEach(p => {
+      const r = progView(o, p.id);
+      if (!r.status || r.status === 'denied' || !r.renewal) return;
+      const d = E.daysUntil(r.renewal), what = p.short + (p.id === '8a' ? ' annual review' : ' recertification');
+      if (d < 0) out.push(['bad', what + ' is overdue (was due ' + r.renewal + ')', 'programs']);
+      else if (d <= 90) out.push(['warn', what + ' due in ' + d + ' days (' + r.renewal + ')', 'programs']);
+    });
+    return out;
+  }
+  function addMonths(iso, months) { const d = new Date(iso + 'T00:00:00Z'); if (isNaN(d)) return ''; d.setUTCMonth(d.getUTCMonth() + months); return d.toISOString().slice(0, 10); }
+
+  function vPrograms(o) {
+    const sel = FW.SB_PROGRAMS.find(p => p.id === ui.prog), ro = !can('edit');
+    const rows = FW.SB_PROGRAMS.map(p => {
+      const r = progView(o, p.id), e = p.eligibility.filter(x => r.elig[x[0]]).length, dn = p.docs.filter(x => docDone(r, x)).length;
+      return '<tr class="click" data-act="selProg" data-id="' + p.id + '"' + (ui.prog === p.id ? ' style="background:var(--accent-soft)"' : '') + '><td><b>' + esc(p.short) + '</b><div class="small muted">' + esc(p.name) + '</div></td><td>' + progPill(r.status) + '</td>' +
+        '<td class="num">' + e + ' / ' + p.eligibility.length + '</td><td class="num">' + dn + ' / ' + p.docs.length + '</td><td>' + esc(r.renewal || '—') + '</td><td class="small muted">' + esc(p.approves.split(';')[0]) + '</td></tr>';
+    }).join('');
+    const who = '<div class="grid g2"><div class="card"><h2>What CERT does</h2><ul class="small" style="padding-left:18px;margin:8px 0 0"><li>Checks your eligibility against each program\'s rules</li><li>Collects and stores application documents, encrypted</li><li>Tracks submission, case number and the agency\'s decision</li><li>Reminds you before recertification or the 8(a) annual review</li></ul></div>' +
+      '<div class="card"><h2>Who approves</h2><ul class="small" style="padding-left:18px;margin:8px 0 0"><li><b>SBA</b> approves WOSB, EDWOSB, 8(a) and HUBZone</li><li><b>SBA VetCert</b> approves VOSB and SDVOSB</li><li><b>The VA</b> confirms veteran status and service-connected disability ratings</li><li>A business is certified only when the agency approves it</li></ul></div></div>';
+    let detail = '<p class="muted small">Choose a program above to check eligibility, collect documents and track the application.</p>';
+    if (sel) {
+      const r = progView(o, sel.id), f = (k, label, x) => inp('prog', k, r[k] || '', Object.assign({ id: sel.id, label, ro }, x || {}));
+      const elig = sel.eligibility.map(x => '<label style="display:flex;gap:8px;align-items:flex-start;padding:5px 0">' + inp('progElig', x[0], !!r.elig[x[0]], { id: sel.id, type: 'check', bare: true, ro }) + '<span>' + esc(x[1]) + '</span></label>').join('');
+      const docs = sel.docs.map(x => {
+        const dr = r.docs[x[0]] || {}, ev = dr.evId && (o.evidence || []).find(v => v.id === dr.evId), fid = 'pu-' + sel.id + '-' + x[0];
+        return '<tr><td>' + esc(x[1]) + '</td><td style="width:190px">' + inp('progDoc', x[0], dr.status || 'needed', { id: sel.id, type: 'select', opts: FW.SB_DOC_STATUSES, bare: true, ro }) + '</td>' +
+          '<td>' + (ev ? '<div class="small">' + esc(ev.name) + '</div>' + btn('download', 'Download', { cls: 'sm ghost', id: ev.id }) : '<span class="small muted">No file yet</span>') + '</td>' +
+          '<td>' + (can('upload') ? '<label class="btn sm" for="' + fid + '">' + (ev ? 'Replace' : 'Upload') + '<input type="file" id="' + fid + '" data-act-change="progFile" data-id="' + sel.id + '" data-x="' + x[0] + '" hidden></label>' : '') + '</td></tr>';
+      }).join('');
+      detail = '<div class="card"><div class="card-h"><div><h2>' + esc(sel.short) + ' · ' + esc(sel.name) + '</h2><p>Approved by ' + esc(sel.approves) + '. ' + esc(sel.cycle) + '.</p></div><div class="actions">' +
+        '<a class="btn sm" href="' + esc(sel.info) + '" target="_blank" rel="noopener">SBA program page</a><a class="btn sm" href="' + esc(sel.reg) + '" target="_blank" rel="noopener">Regulation</a></div></div>' +
+        '<div class="form">' + f('status', 'Application status', { type: 'select', opts: FW.SB_STATUSES }) + f('caseNo', 'Application or case number') + f('submitted', 'Submitted to agency on', { type: 'date' }) +
+        f('decision', 'Agency decision on', { type: 'date' }) + f('certified', 'Certified on (from the agency\'s letter)', { type: 'date' }) +
+        f('renewal', sel.id === '8a' ? 'Next annual review due' : 'Recertification due', { type: 'date', hint: 'Filled in from the certification date; change it to match the agency\'s letter.' }) +
+        f('notes', 'Notes', { type: 'textarea', wide: true, rows: 2 }) + '</div></div>' +
+        '<div class="grid g-side"><div class="card"><div class="card-h"><div><h2>Documents</h2><p>Typical documents for this application; confirm the current list in the SBA application. Upload business documents only, never CUI.</p></div></div><div class="tbl-wrap"><table class="t"><tbody>' + docs + '</tbody></table></div></div>' +
+        '<div class="card"><div class="card-h"><div><h2>Eligibility checklist</h2><p>Your own check before applying. The agency makes the official eligibility decision.</p></div></div>' + elig + '</div></div>';
+    }
+    return pageH('Small business programs', 'SBA certifications', 'Prepare and track WOSB, EDWOSB, SDVOSB, VOSB, 8(a) and HUBZone applications for ' + esc(o.name) + '. ' + esc(FW.SB_APPROVAL_NOTE), btn('doc', 'Print summary', { x: 'sbp' })) +
+      who + '<div class="tbl-wrap"><table class="t"><thead><tr><th>Program</th><th>Status</th><th class="num">Eligibility</th><th class="num">Documents</th><th>Renewal due</th><th>Approved by</th></tr></thead><tbody>' + rows + '</tbody></table></div>' + detail;
+  }
+
+  // ---------- Licensing ----------
+  // The server enforces every limit; these checks only give a clear message before a change is attempted.
+  const lic = () => (Store.license ? Store.license() : null);
+  const inUse = () => ({ users: S.users.filter(u => u.active !== false).length, clients: S.orgs.length });
+  const LIC_CONTACT = 'To change your license, contact your CERT V2.0 provider.';
+  function overLimit(kind) {
+    const l = lic();
+    if (!l || l.demo) return '';
+    const lim = kind === 'users' ? l.seats : l.clients;
+    if (lim == null || inUse()[kind] < lim) return '';
+    const what = kind === 'users' ? (lim === 1 ? 'user' : 'users') : (lim === 1 ? 'client company' : 'client companies');
+    return 'Your ' + l.label + ' includes ' + lim + ' ' + what + ', and all of them are in use. ' + LIC_CONTACT;
+  }
+  function licenseCard() {
+    const l = lic();
+    if (!l) return '';
+    const u = inUse(), part = (n, lim, label) => stat(label, n + (lim != null ? '<small style="font-size:18px" class="muted"> / ' + lim + '</small>' : ''), lim == null ? 'No limit' : Math.max(0, lim - n) + ' available', lim != null && n >= lim ? 'warn' : '');
+    return '<div class="card"><div class="card-h"><div><h2>License</h2><p>' + (l.demo ? 'This demo shows an Enterprise license. Licensing applies on the live site.' : Store.siteOwner && Store.siteOwner() ? 'This is your own workspace. Manage each customer\'s license under Customer workspaces.' : LIC_CONTACT) + '</p></div>' + pill(l.status === 'suspended' ? 'bad' : 'ok', l.label) + '</div>' +
+      '<div class="grid g3">' + part(u.users, l.seats, 'Users') + part(u.clients, l.clients, 'Client companies') + stat('Licensed since', esc(l.since || '—')) + '</div></div>';
+  }
+
+  const LIC_TYPES = [['enterprise', 'Enterprise license'], ['user', 'User license (1 user, 1 company)'], ['unlimited', 'Unlimited']];
+  async function loadWorkspaces() {
+    if (ui.wsLoading) return;
+    ui.wsLoading = true;
+    try { ui.ws = { rows: await Store.request('GET', '/api/workspaces') }; } catch (e) { ui.ws = { error: e.message }; }
+    ui.wsLoading = false; render();
+  }
+  function workspaceForm(w) {
+    const l = (w && w.license) || {};
+    const fields = [
+      !w && { k: 'name', label: 'Company name', ph: 'e.g. B2G Connect' },
+      { k: 'type', label: 'License', type: 'select', opts: LIC_TYPES, v: l.type || 'enterprise' },
+      { k: 'seats', label: 'Users', type: 'number', optional: true, v: l.type === 'enterprise' ? l.seats : '', hint: 'Enterprise only: how many people can have an active login.' },
+      { k: 'clients', label: 'Client companies', type: 'number', optional: true, v: l.type === 'enterprise' && l.clients != null ? l.clients : '', hint: 'Enterprise only. Leave empty for no limit.' },
+      !w && { k: 'adminName', label: 'First administrator\'s name' },
+      !w && { k: 'adminEmail', label: 'First administrator\'s email', type: 'email', hint: 'They sign in with this email and invite their own team and clients.' },
+      { k: 'notes', label: 'Notes (internal)', type: 'textarea', optional: true, v: l.notes || '', hint: 'For example the order or invoice number.' }
+    ].filter(Boolean);
+    const licBody = v => ({ type: v.type, seats: v.seats || null, clients: v.clients || null, notes: v.notes, status: l.status || 'active', since: l.since || E.iso(Date.now()) });
+    ui.modal = {
+      type: 'prompt', title: w ? 'Change license: ' + w.name : 'Add customer workspace', ok: w ? 'Save license' : 'Create workspace', fields,
+      text: w ? 'Users and client companies already in the workspace stay; new additions must fit the new license.' : 'Creates a private, separate workspace for this customer, with its own users, client companies and data.',
+      onOk: async v => {
+        try {
+          if (w) { await Store.request('PATCH', '/api/workspaces/' + encodeURIComponent(w.slug), { license: licBody(v) }); toast('License updated for ' + w.name); }
+          else { await Store.request('POST', '/api/workspaces', { name: v.name, license: licBody(v), admin: { name: v.adminName, email: v.adminEmail } }); toast('Workspace created. Ask ' + v.adminEmail + ' to open this site and choose "First time? Create your login".'); }
+          ui.ws = null;
+        } catch (e) { toast((w ? 'Not saved: ' : 'Not created: ') + e.message); }
+      }
+    };
+  }
+  function vWorkspaces() {
+    const head = pageH('Business', 'Customer workspaces', 'Each customer gets a private workspace on this site with its own users, client companies and data. Set each one\'s license here; the limits are enforced automatically.', btn('wsAdd', 'Add customer workspace', { cls: 'pri' }));
+    if (!ui.ws) { loadWorkspaces(); return head + '<p class="muted">Loading workspaces…</p>'; }
+    if (ui.ws.error) return head + '<div class="note bad">Could not load workspaces: ' + esc(ui.ws.error) + '</div>';
+    const lim = (n, max) => n + (max != null ? ' / ' + max : '') + (max != null && n >= max ? ' ' + pill('warn', 'Full') : '');
+    const rows = ui.ws.rows.map(w => {
+      const a = w.admins[0], sus = w.license.status === 'suspended';
+      return '<tr><td><b>' + esc(w.name) + '</b>' + (w.own ? ' ' + pill('info', 'Your workspace') : '') + '<div class="small muted mono">' + esc(w.slug) + ' · since ' + esc(w.license.since || w.createdAt) + '</div></td>' +
+        '<td>' + esc(w.license.label) + (w.license.notes ? '<div class="small muted">' + esc(w.license.notes) + '</div>' : '') + '</td>' +
+        '<td class="num">' + lim(w.usage.users, w.license.seats) + '</td><td class="num">' + lim(w.usage.clients, w.license.clients) + '</td>' +
+        '<td>' + (sus ? pill('bad', 'Suspended') : pill('ok', 'Active')) + '</td>' +
+        '<td class="small">' + (a ? esc(a.name) + '<div class="muted">' + esc(a.email) + ' · ' + (a.signedIn ? 'signed in' : 'invited, not signed in yet') + '</div>' : '—') + '</td>' +
+        '<td><div class="actions">' + btn('wsEdit', 'Change license', { cls: 'sm', id: w.slug }) + (w.own ? '' : btn('wsSuspend', ui.confirm === 'ws:' + w.slug ? 'Click again to confirm' : (sus ? 'Re-activate' : 'Suspend'), { cls: 'sm' + (sus ? '' : ' danger'), id: w.slug })) + '</div></td></tr>';
+    }).join('');
+    return head + '<div class="tbl-wrap"><table class="t"><thead><tr><th>Customer</th><th>License</th><th class="num">Users</th><th class="num">Client companies</th><th>Status</th><th>First administrator</th><th></th></tr></thead><tbody>' + rows + '</tbody></table></div>' +
+      '<p class="small muted">User license: 1 user and 1 client company. Enterprise license: the users and client companies you set. Suspending a workspace blocks its sign-ins; its data is kept, and re-activating restores access.</p>';
   }
 
   // ---------- Live-version pages: reports, partner network, handoff, engagement tiers, welcome ----------
@@ -2188,6 +2417,7 @@ window.NIST171 = [{"id":"3.1.1","family":"Access Control","text":"Limit system a
       ['doc', 'gate', 'Readiness determination', 'Readiness gate results: is this client ready for independent assessment?'],
       (certReady(o) || !isClient()) && ['doc', 'cert', o.level === 1 ? 'Certificate of Self-Assessment Completion' : 'Certificate of Assessment Readiness', certReady(o) ? 'Printable certificate showing the client is ready. Print it or save it as a PDF.' : 'Becomes final when every readiness check passes; until then it opens as a watermarked draft.'],
       !isClient() && ['doc', 'mock', 'Mock assessment report', 'Findings, severity and readiness determination from the CERT VERIFY pre-assessment.'],
+      ['doc', 'sbp', 'Small business certification summary', 'Status, eligibility, documents and dates for each SBA program. Approval is by the SBA.'],
       can('services') && ['doc', 'proposal', 'Proposal', 'Packages and pricing from this client\'s scoping and findings.']
     ].filter(Boolean);
     return pageH('Documentation', 'Reports', 'Everything CERT generates for ' + esc(o.name) + '. Open a report to download, print or copy it.') +
@@ -2203,6 +2433,13 @@ window.NIST171 = [{"id":"3.1.1","family":"Access Control","text":"Limit system a
         ? '<p class="hero-sub">Your CERT account is ready and empty. Set up your first defense contractor in three steps.</p><ol class="steps"><li><span><b>Add a client</b> and complete intake &amp; scoping. CERT recommends the CMMC level and engagement tier.</span></li><li><span><b>Invite the client\'s contacts</b> under Settings → Users, with the email each person will sign in with.</span></li><li><span><b>Add your partner C3PAOs</b> in the Partner network, ready for the handoff.</span></li></ol><div class="actions">' + btn('addClient', 'Add your first client', { cls: 'pri' }) + btn('go', 'Partner network', { x: 'partners' }) + (can('settings') ? btn('go', 'Settings', { x: 'settings' }) : '') + '</div>'
         : '<p class="hero-sub">No clients are assigned to your account yet. Ask your CERT administrator to give you access.</p>') +
       '</div></section>';
+  }
+
+  function promptField(f) {
+    const a = 'id="pf-' + f.k + '" name="' + f.k + '"' + (f.optional ? '' : ' required');
+    if (f.type === 'select') return '<select ' + a + '>' + opt(f.opts, f.v) + '</select>';
+    if (f.type === 'textarea') return '<textarea ' + a + ' rows="3">' + esc(f.v || '') + '</textarea>';
+    return '<input ' + a + ' type="' + (f.type || 'text') + '"' + (f.type === 'number' ? ' min="1" step="1"' : '') + ' value="' + esc(f.v == null ? '' : f.v) + '" placeholder="' + esc(f.ph || '') + '">';
   }
 
   // ---------- Modals ----------
@@ -2228,14 +2465,14 @@ window.NIST171 = [{"id":"3.1.1","family":"Access Control","text":"Limit system a
         '<div class="actions">' + btn('doUpload', 'Upload and hash ' + (u.files.length || '') + ' file' + (u.files.length === 1 ? '' : 's'), { cls: 'pri', dis: !u.files.length || (Store.requiresCuiAttestation && !u.noCui) }) + '</div></div></div></div>';
     }
     if (md.type === 'prompt') {
-      return '<div class="modal" role="dialog" aria-modal="true" aria-label="' + esc(md.title) + '"><div class="modal-box narrow"><div class="modal-h"><h2>' + esc(md.title) + '</h2>' + btn('close', 'Cancel') + '</div><form class="modal-b grid" id="prompt-form">' + (md.text ? '<p class="small">' + esc(md.text) + '</p>' : '') + md.fields.map(f => '<label class="fld" for="pf-' + f.k + '"><span>' + esc(f.label) + '</span>' + (f.type === 'textarea' ? '<textarea id="pf-' + f.k + '" name="' + f.k + '" rows="3" required>' + esc(f.v || '') + '</textarea>' : '<input id="pf-' + f.k + '" name="' + f.k + '" value="' + esc(f.v || '') + '" required>') + '</label>').join('') + '<div class="actions"><button type="submit" class="btn pri">' + esc(md.ok) + '</button></div></form></div></div>';
+      return '<div class="modal" role="dialog" aria-modal="true" aria-label="' + esc(md.title) + '"><div class="modal-box narrow"><div class="modal-h"><h2>' + esc(md.title) + '</h2>' + btn('close', 'Cancel') + '</div><form class="modal-b grid" id="prompt-form">' + (md.text ? '<p class="small">' + esc(md.text) + '</p>' : '') + md.fields.map(f => '<label class="fld" for="pf-' + f.k + '"><span>' + esc(f.label) + '</span>' + promptField(f) + (f.hint ? '<em>' + esc(f.hint) + '</em>' : '') + '</label>').join('') + '<div class="actions"><button type="submit" class="btn pri">' + esc(md.ok) + '</button></div></form></div></div>';
     }
     return '';
   }
 
   // ---------- Render ----------
-  const VIEWS = { dashboard: vDashboard, portfolio: vPortfolio, intake: vIntake, l1: vL1, l2: vL2, sprs: vSPRS, evidence: vEvidence, poam: vPOAM, ssp: vSSP, policies: vPolicies, l3: vL3, assess: vAssess, gate: vGate, services: vServices, settings: vSettings, activity: vActivity, reports: vReports, partners: vPartners };
-  const NO_CLIENT_VIEWS = ['portfolio', 'partners', 'settings'];   // pages that work before the first client exists
+  const VIEWS = { dashboard: vDashboard, portfolio: vPortfolio, intake: vIntake, l1: vL1, l2: vL2, sprs: vSPRS, evidence: vEvidence, poam: vPOAM, ssp: vSSP, policies: vPolicies, l3: vL3, assess: vAssess, gate: vGate, services: vServices, settings: vSettings, activity: vActivity, reports: vReports, partners: vPartners, workspaces: vWorkspaces, programs: vPrograms };
+  const NO_CLIENT_VIEWS = ['portfolio', 'partners', 'settings', 'workspaces'];   // pages that work before the first client exists
   let rq = 0;
   function render() { if (rq) return; rq = setTimeout(doRender, 0); }
   function doRender() {
@@ -2296,7 +2533,16 @@ window.NIST171 = [{"id":"3.1.1","family":"Access Control","text":"Limit system a
       case 'weight': if (v === '') delete S.method.weightOverrides[id]; else S.method.weightOverrides[id] = v; break;
       case 'reg': S.reg = S.reg || JSON.parse(JSON.stringify(FW.DEFAULT_REG)); S.reg[k] = k === 'items' ? String(v).split('\n').map(s => s.trim()).filter(Boolean) : v; break;
       case 'provider': S.provider = prov(); S.provider[k] = v; break;
-      case 'user': { const u = S.users.find(x => x.id === id); if (u) u[k] = k === 'email' ? String(v).trim().toLowerCase() : v; break; }
+      case 'user': { const u = S.users.find(x => x.id === id); if (u && k === 'active' && v && u.active === false && overLimit('users')) { toast(overLimit('users')); el.checked = false; return; } if (u) u[k] = k === 'email' ? String(v).trim().toLowerCase() : v; break; }
+      case 'prog': {
+        const r = progRec(o, id), p = FW.SB_PROGRAMS.find(x => x.id === id);
+        r[k] = v;
+        if (final && k === 'status') log(o, 'SBA ' + p.short + ' status → ' + sbLabel(FW.SB_STATUSES, v));
+        if (final && k === 'certified' && v) r.renewal = addMonths(v, p.renewMonths);
+        break;
+      }
+      case 'progElig': progRec(o, id).elig[k] = v; break;
+      case 'progDoc': { const r = progRec(o, id); r.docs[k] = Object.assign({}, r.docs[k], { status: v }); break; }
       case 'partner': { const pt = (S.partners || []).find(x => x.id === id); if (pt) pt[k] = v; break; }
       case 'handoff': {
         o.handoff = o.handoff || {};
@@ -2328,6 +2574,15 @@ window.NIST171 = [{"id":"3.1.1","family":"Access Control","text":"Limit system a
     if (a === 'plan') { o.plan = el.value; save(); }
     if (a === 'uOrg' || a === 'uCons') { const u = S.users.find(x => x.id === el.dataset.id), list = a === 'uOrg' ? u.orgIds : u.consulted, x = el.dataset.x; const i = list.indexOf(x); if (el.checked && i < 0) list.push(x); if (!el.checked && i > -1) list.splice(i, 1); save(); }
     if (a === 'importJson') { importJson(el.files[0]); return; }
+    if (a === 'progFile') {
+      const f = el.files && el.files[0], p = FW.SB_PROGRAMS.find(x => x.id === el.dataset.id), d = p && p.docs.find(x => x[0] === el.dataset.x);
+      if (!f || !d) return;
+      toast('Uploading ' + f.name + '…');
+      Store.addEvidence(o, f, { kind: 'program', program: p.id, docId: d[0], type: 'other', reqIds: [], objectiveIds: [], expiresAt: '', comments: 'SBA ' + p.short + ': ' + d[1], uploadedBy: user().name, attestNoCui: true })
+        .then(rec => { progRec(o, p.id).docs[d[0]] = { status: 'uploaded', evId: rec.id }; log(o, 'SBA ' + p.short + ' document uploaded: ' + d[1]); save(); toast('Uploaded and encrypted: ' + rec.name); render(); })
+        .catch(err => toast('Upload failed: ' + err.message));
+      return;
+    }
     if (a === 'upFiles') ui.upload.files = Array.from(el.files || []);
     if (a === 'upNoCui') ui.upload.noCui = el.checked;
     if (a === 'upReq') { ui.upload.reqId = el.value; ui.upload.objs = allObjs(el.value); }
@@ -2340,7 +2595,8 @@ window.NIST171 = [{"id":"3.1.1","family":"Access Control","text":"Limit system a
     e.preventDefault();
     const fd = new FormData(e.target), vals = {};
     ui.modal.fields.forEach(f => { vals[f.k] = String(fd.get(f.k) || '').trim(); });
-    const cb = ui.modal.onOk; ui.modal = null; cb(vals); save(); render();
+    const cb = ui.modal.onOk; ui.modal = null; const r = cb(vals); save(); render();
+    if (r && typeof r.then === 'function') r.then(() => render());
   });
   const allObjs = id => { const o = {}; (FW.REQ[id] ? FW.REQ[id].objectives : []).forEach(ob => { o[ob.k] = true; }); return o; };
 
@@ -2425,7 +2681,7 @@ window.NIST171 = [{"id":"3.1.1","family":"Access Control","text":"Limit system a
   function makeDoc(x) {
     const o = org();
     if (x.indexOf('policy:') === 0) return D.policy(S, o, x.split(':')[1]);
-    return ({ sprs: D.sprsReport, ssp: D.ssp, poam: D.poam, l1: D.level1, mock: D.mockReport, gate: D.readinessLetter, proposal: D.proposal, cert: D.certificate }[x])(S, o);
+    return ({ sprs: D.sprsReport, ssp: D.ssp, poam: D.poam, l1: D.level1, mock: D.mockReport, gate: D.readinessLetter, proposal: D.proposal, cert: D.certificate, sbp: D.programs }[x])(S, o);
   }
   function importJson(file) {
     if (!file) return;
@@ -2447,12 +2703,23 @@ window.NIST171 = [{"id":"3.1.1","family":"Access Control","text":"Limit system a
     if (!el || el.disabled) return;
     if (el.tagName === 'A') e.preventDefault();
     const a = el.dataset.act, id = el.dataset.id, x = el.dataset.x, o = org();
-    if (a !== 'resetDemo' && a !== 'removeOrg' && a !== 'resetMethod' && a !== 'delPartner') ui.confirm = '';
+    if (a !== 'resetDemo' && a !== 'removeOrg' && a !== 'resetMethod' && a !== 'delPartner' && a !== 'wsSuspend') ui.confirm = '';
     switch (a) {
       case 'go': go(x); return;
       case 'nav': ui.navOpen = !ui.navOpen; break;
       case 'hideReg': ui.regHidden = true; break;
       case 'signOut': if (Store.flush) await Store.flush(); window.CERT_AUTH.signOut(); return;
+      case 'selProg': ui.prog = ui.prog === id ? '' : id; break;
+      case 'wsAdd': workspaceForm(null); break;
+      case 'wsEdit': workspaceForm(ui.ws.rows.find(w => w.slug === id)); break;
+      case 'wsSuspend': {
+        if (ui.confirm !== 'ws:' + id) { ui.confirm = 'ws:' + id; break; }
+        ui.confirm = '';
+        const w = ui.ws.rows.find(r => r.slug === id), sus = w.license.status === 'suspended';
+        try { await Store.request('PATCH', '/api/workspaces/' + encodeURIComponent(id), { license: Object.assign({}, w.license, { status: sus ? 'active' : 'suspended' }) }); toast(w.name + (sus ? ' re-activated' : ' suspended')); ui.ws = null; }
+        catch (e) { toast('Not saved: ' + e.message); }
+        break;
+      }
       case 'addPartner': S.partners = S.partners || []; S.partners.push({ id: uid('p'), name: '', type: 'c3pao', status: 'prospect', authorization: '', contact: '', email: '', phone: '', website: '', notes: '' }); save(); break;
       case 'delPartner': if (ui.confirm !== 'partner:' + id) { ui.confirm = 'partner:' + id; break; } S.partners = S.partners.filter(v => v.id !== id); ui.confirm = ''; save(); toast('Partner removed'); break;
       case 'openOrg': S.currentOrg = id; save(); go('dashboard'); return;
@@ -2520,11 +2787,12 @@ window.NIST171 = [{"id":"3.1.1","family":"Access Control","text":"Limit system a
         break;
       }
       case 'addClient': {
+        if (overLimit('clients')) { toast(overLimit('clients')); break; }
         const fresh = blankOrg(uid('org'));
         S.orgs.push(fresh); S.users.forEach(u => { if (u.id === S.currentUser && !u.orgIds.includes('*')) u.orgIds.push(fresh.id); });
         S.currentOrg = fresh.id; log(fresh, 'Client created'); save(); go('intake'); return;
       }
-      case 'addUser': S.users.push({ id: uid('u'), name: 'New user', title: '', email: '', role: 'client', active: true, orgIds: o ? [o.id] : [], consulted: [] }); save(); toast('User added. Enter their email address so they can sign in.'); break;
+      case 'addUser': if (overLimit('users')) { toast(overLimit('users')); break; } S.users.push({ id: uid('u'), name: 'New user', title: '', email: '', role: 'client', active: true, orgIds: o ? [o.id] : [], consulted: [] }); save(); toast('User added. Enter their email address so they can sign in.'); break;
       case 'exportJson': { const blob = new Blob([JSON.stringify(S, null, 1)], { type: 'application/json' }); download('cert-v2-backup-' + E.iso(Date.now()) + '.json', blob); return; }
       case 'resetMethod': if (ui.confirm !== 'method') { ui.confirm = 'method'; break; } S.method = JSON.parse(JSON.stringify(FW.DEFAULT_METHOD)); ui.confirm = ''; save(); toast('Scoring rules reset to DoD default'); break;
       case 'removeOrg': if (!o) break; if (ui.confirm !== 'org') { ui.confirm = 'org'; break; } S.orgs = S.orgs.filter(v => v.id !== o.id); S.currentOrg = S.orgs[0] ? S.orgs[0].id : null; ui.confirm = ''; save(); toast('Client removed'); break;
